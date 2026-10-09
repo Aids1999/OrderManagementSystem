@@ -1,0 +1,11 @@
+<section class="card small" *ngIf="auth.currentUser as user">
+  <h1>Профиль</h1>
+  <form (ngSubmit)="save()">
+    <label>Имя<input name="name" [(ngModel)]="form.name" required></label>
+    <label>Email<input type="email" name="email" [(ngModel)]="form.email" required></label>
+    <label>Роль<input [value]="user.role === 'customer' ? 'Заказчик' : 'Исполнитель'" disabled></label>
+    <p class="error" *ngIf="error">{{ error }}</p>
+    <button type="submit">Сохранить</button>
+    <a class="button secondary" routerLink="/orders">Отмена</a>
+  </form>
+</section>

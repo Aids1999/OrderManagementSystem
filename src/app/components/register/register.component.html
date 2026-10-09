@@ -1,0 +1,11 @@
+<section class="card small">
+  <h1>Регистрация заказчика</h1>
+  <form (ngSubmit)="register()">
+    <label>Имя<input name="name" [(ngModel)]="form.name" required></label>
+    <label>Email<input type="email" name="email" [(ngModel)]="form.email" required></label>
+    <label>Пароль<input type="password" name="password" [(ngModel)]="form.password" required></label>
+    <p class="error" *ngIf="error">{{ error }}</p>
+    <button type="submit">Зарегистрироваться</button>
+    <a routerLink="/login">Назад ко входу</a>
+  </form>
+</section>
