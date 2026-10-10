@@ -1,0 +1,42 @@
+header {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 16px 24px;
+  color: white;
+  background: #3157d5;
+}
+
+header span {
+  margin-left: auto;
+}
+
+nav {
+  display: flex;
+  gap: 12px;
+}
+
+nav a,
+nav button {
+  padding: 0;
+  border: 0;
+  color: white;
+  background: transparent;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+main {
+  padding: 32px 16px;
+}
+
+@media (max-width: 650px) {
+  header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  header span {
+    margin-left: 0;
+  }
+}

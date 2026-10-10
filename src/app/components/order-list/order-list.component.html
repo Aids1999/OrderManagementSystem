@@ -1,0 +1,37 @@
+<section class="card" *ngIf="user as currentUser">
+  <div class="toolbar">
+    <h1>{{ currentUser.role === 'customer' ? 'Мои заказы' : 'Доступные заказы' }}</h1>
+    <a class="button" *ngIf="currentUser.role === 'customer'" routerLink="/orders/new">Создать заказ</a>
+  </div>
+
+  <label class="filter">Статус
+    <select [(ngModel)]="filter">
+      <option value="all">Все</option>
+      <option value="new">Новый</option>
+      <option value="in_progress">В работе</option>
+      <option value="completed">Выполнен</option>
+    </select>
+  </label>
+
+  <div class="orders">
+    <article *ngFor="let order of orders">
+      <div>
+        <h2>{{ order.title }}</h2>
+        <p>{{ order.description }}</p>
+        <small>Срок: {{ order.deadline }} · Стоимость: {{ order.price }} ₽</small>
+      </div>
+      <div class="actions">
+        <span class="status">{{ statusText(order.status) }}</span>
+        <a class="button secondary" *ngIf="currentUser.role === 'customer' && order.status === 'new'"
+           [routerLink]="['/orders', order.id, 'edit']">Изменить</a>
+        <button class="danger" *ngIf="currentUser.role === 'customer' && order.status === 'new'"
+                type="button" (click)="deleteOrder(order.id)">Удалить</button>
+        <button *ngIf="currentUser.role === 'executor' && order.status === 'new'"
+                type="button" (click)="acceptOrder(order.id)">Принять</button>
+        <button *ngIf="currentUser.role === 'executor' && order.status === 'in_progress'"
+                type="button" (click)="completeOrder(order.id)">Завершить</button>
+      </div>
+    </article>
+    <p *ngIf="orders.length === 0">Заказов пока нет.</p>
+  </div>
+</section>

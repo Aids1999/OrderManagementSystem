@@ -1,0 +1,147 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  color: #243047;
+  background: #f3f6fb;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+.card {
+  max-width: 900px;
+  margin: auto;
+  padding: 24px;
+  border-radius: 12px;
+  background: white;
+  box-shadow: 0 4px 14px #24304714;
+}
+
+.small {
+  max-width: 430px;
+}
+
+h1,
+h2,
+p {
+  margin-top: 0;
+}
+
+form {
+  display: grid;
+  gap: 14px;
+}
+
+label {
+  display: grid;
+  gap: 6px;
+  font-size: 14px;
+}
+
+input,
+textarea,
+select,
+button,
+.button {
+  padding: 10px;
+  border: 1px solid #b8c3d9;
+  border-radius: 7px;
+}
+
+textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+button,
+.button {
+  border: 0;
+  color: white;
+  background: #3157d5;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.secondary {
+  color: #3157d5;
+  background: #e9edfb;
+}
+
+.danger {
+  background: #c62828;
+}
+
+form > a:not(.button) {
+  color: #3157d5;
+  text-align: center;
+}
+
+.hint {
+  margin: 12px 0 0;
+  color: #64708a;
+  font-size: 13px;
+}
+
+.error {
+  color: #c62828;
+}
+
+.toolbar,
+article,
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.toolbar,
+article {
+  justify-content: space-between;
+}
+
+.filter {
+  width: 180px;
+  margin: 20px 0;
+}
+
+.orders {
+  display: grid;
+  gap: 12px;
+}
+
+article {
+  padding: 16px;
+  border: 1px solid #dce3f0;
+  border-radius: 8px;
+}
+
+article h2 {
+  font-size: 18px;
+}
+
+.status {
+  white-space: nowrap;
+  color: #3157d5;
+  font-weight: bold;
+}
+
+@media (max-width: 650px) {
+  article,
+  .toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .actions {
+    flex-wrap: wrap;
+  }
+}

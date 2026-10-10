@@ -1,0 +1,13 @@
+<header *ngIf="auth.currentUser as user">
+  <strong>Система учёта заказов</strong>
+  <nav>
+    <a routerLink="/orders">Заказы</a>
+    <a routerLink="/profile">Профиль</a>
+    <button type="button" (click)="logout()">Выйти</button>
+  </nav>
+  <span>{{ user.name }}</span>
+</header>
+
+<main>
+  <router-outlet></router-outlet>
+</main>
