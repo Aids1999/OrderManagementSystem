@@ -5,6 +5,7 @@
     <label>Описание<textarea name="description" [(ngModel)]="form.description" required></textarea></label>
     <label>Срок<input type="date" name="deadline" [(ngModel)]="form.deadline" required></label>
     <label>Стоимость<input type="number" name="price" [(ngModel)]="form.price" min="1" required></label>
+    <p class="error" *ngIf="error">{{ error }}</p>
     <button type="submit">Сохранить</button>
     <a class="button secondary" routerLink="/orders">Отмена</a>
   </form>

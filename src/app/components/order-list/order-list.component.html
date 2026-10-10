@@ -5,13 +5,15 @@
   </div>
 
   <label class="filter">Статус
-    <select [(ngModel)]="filter">
+    <select [(ngModel)]="filter" (ngModelChange)="changeFilter()">
       <option value="all">Все</option>
       <option value="new">Новый</option>
       <option value="in_progress">В работе</option>
       <option value="completed">Выполнен</option>
     </select>
   </label>
+
+  <p class="error" *ngIf="error">{{ error }}</p>
 
   <div class="orders">
     <article *ngFor="let order of orders">
@@ -33,5 +35,11 @@
       </div>
     </article>
     <p *ngIf="orders.length === 0">Заказов пока нет.</p>
+  </div>
+
+  <div class="pagination" *ngIf="totalPages > 1">
+    <button type="button" [disabled]="page === 1" (click)="changePage(-1)">Назад</button>
+    <span>Страница {{ page }} из {{ totalPages }}</span>
+    <button type="button" [disabled]="page === totalPages" (click)="changePage(1)">Вперёд</button>
   </div>
 </section>

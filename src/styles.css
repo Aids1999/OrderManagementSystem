@@ -118,6 +118,19 @@ article {
   gap: 12px;
 }
 
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
 article {
   padding: 16px;
   border: 1px solid #dce3f0;

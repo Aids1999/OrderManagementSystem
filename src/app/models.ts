@@ -5,7 +5,6 @@ export interface User {
   id: number;
   name: string;
   email: string;
-  password: string;
   role: Role;
 }
 
@@ -21,3 +20,11 @@ export interface Order {
 }
 
 export type OrderForm = Pick<Order, 'title' | 'description' | 'deadline' | 'price'>;
+
+export interface PageResult<T> {
+  items: T[];
+  page: number;
+  pageSize: number;
+  total: number;
+  totalPages: number;
+}

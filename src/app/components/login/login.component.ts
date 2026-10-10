@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { apiErrorMessage } from '../../api.config';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -16,11 +17,12 @@ export class LoginComponent {
 
   constructor(private auth: AuthService, private router: Router) {}
 
-  login(): void {
-    if (this.auth.login(this.form.email, this.form.password)) {
+  async login(): Promise<void> {
+    try {
+      await this.auth.login(this.form.email, this.form.password);
       this.router.navigate(['/orders']);
-    } else {
-      this.error = 'Неверный email или пароль';
+    } catch (error) {
+      this.error = apiErrorMessage(error);
     }
   }
 }
