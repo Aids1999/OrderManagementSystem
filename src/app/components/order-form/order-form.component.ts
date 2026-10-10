@@ -1,6 +1,8 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { apiErrorMessage } from '../../api.config';
 import { OrderForm } from '../../models';
 import { AuthService } from '../../services/auth.service';
 import { OrderService } from '../../services/order.service';
@@ -8,12 +10,13 @@ import { OrderService } from '../../services/order.service';
 @Component({
   selector: 'app-order-form',
   standalone: true,
-  imports: [FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './order-form.component.html'
 })
 export class OrderFormComponent implements OnInit {
   form: OrderForm = { title: '', description: '', deadline: '', price: 0 };
   orderId: number | null = null;
+  error = '';
 
   constructor(
     private auth: AuthService,
@@ -22,7 +25,7 @@ export class OrderFormComponent implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     const user = this.auth.currentUser;
     if (!user || user.role !== 'customer') {
       this.router.navigate(['/login']);
@@ -32,29 +35,35 @@ export class OrderFormComponent implements OnInit {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.orderId = Number(id);
-      const order = this.orderService.getOrder(this.orderId, user.id);
-      if (order) {
+      try {
+        const order = await this.orderService.getOrder(this.orderId, user.id);
         this.form = {
           title: order.title,
           description: order.description,
           deadline: order.deadline,
           price: order.price
         };
+      } catch (error) {
+        this.error = apiErrorMessage(error);
       }
     }
   }
 
-  save(): void {
+  async save(): Promise<void> {
     const user = this.auth.currentUser;
     if (!user) {
       return;
     }
 
-    if (this.orderId) {
-      this.orderService.updateOrder(this.orderId, this.form, user.id);
-    } else {
-      this.orderService.createOrder(this.form, user.id);
+    try {
+      if (this.orderId) {
+        await this.orderService.updateOrder(this.orderId, this.form, user.id);
+      } else {
+        await this.orderService.createOrder(this.form, user.id);
+      }
+      this.router.navigate(['/orders']);
+    } catch (error) {
+      this.error = apiErrorMessage(error);
     }
-    this.router.navigate(['/orders']);
   }
 }
