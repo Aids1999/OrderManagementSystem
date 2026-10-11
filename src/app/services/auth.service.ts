@@ -1,49 +1,38 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
+import { API_URL } from '../api.config';
 import { User } from '../models';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  // Пока сервера нет, пользователи хранятся в обычном массиве.
-  private users: User[] = [
-    { id: 1, name: 'Анна Заказчик', email: 'customer@mail.ru', password: '123456', role: 'customer' },
-    { id: 2, name: 'Иван Исполнитель', email: 'executor@mail.ru', password: '123456', role: 'executor' }
-  ];
-
   currentUser: User | null = null;
 
-  login(email: string, password: string): boolean {
-    this.currentUser = this.users.find(user =>
-      user.email === email && user.password === password
-    ) ?? null;
-    return this.currentUser !== null;
+  constructor(private http: HttpClient) {}
+
+  async login(email: string, password: string): Promise<void> {
+    this.currentUser = await firstValueFrom(
+      this.http.post<User>(`${API_URL}/auth/login`, { email, password })
+    );
   }
 
-  register(name: string, email: string, password: string): boolean {
-    if (this.users.some(user => user.email === email)) {
-      return false;
-    }
-
-    this.currentUser = {
-      id: this.users.length + 1,
-      name,
-      email,
-      password,
-      role: 'customer'
-    };
-    this.users.push(this.currentUser);
-    return true;
+  async register(name: string, email: string, password: string): Promise<void> {
+    this.currentUser = await firstValueFrom(
+      this.http.post<User>(`${API_URL}/auth/register`, { name, email, password })
+    );
   }
 
-  updateProfile(name: string, email: string): boolean {
-    if (!this.currentUser || this.users.some(user =>
-      user.email === email && user.id !== this.currentUser?.id
-    )) {
-      return false;
+  async updateProfile(name: string, email: string): Promise<void> {
+    if (!this.currentUser) {
+      throw new Error('Пользователь не авторизован');
     }
-
-    this.currentUser.name = name;
-    this.currentUser.email = email;
-    return true;
+    this.currentUser = await firstValueFrom(
+      this.http.put<User>(`${API_URL}/profile`, {
+        userId: this.currentUser.id,
+        name,
+        email
+      })
+    );
   }
 
   logout(): void {

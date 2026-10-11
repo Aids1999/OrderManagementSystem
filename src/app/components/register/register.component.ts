@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { apiErrorMessage } from '../../api.config';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -16,11 +17,12 @@ export class RegisterComponent {
 
   constructor(private auth: AuthService, private router: Router) {}
 
-  register(): void {
-    if (this.auth.register(this.form.name, this.form.email, this.form.password)) {
+  async register(): Promise<void> {
+    try {
+      await this.auth.register(this.form.name, this.form.email, this.form.password);
       this.router.navigate(['/orders']);
-    } else {
-      this.error = 'Пользователь с таким email уже существует';
+    } catch (error) {
+      this.error = apiErrorMessage(error);
     }
   }
 }
