@@ -33,13 +33,8 @@ export function orderController(service: OrderService): Router {
     response.sendStatus(204);
   });
 
-  router.put('/:id/accept', async (request, response) => {
-    await service.accept(request.params['id'], request.body?.userId);
-    response.sendStatus(204);
-  });
-
-  router.put('/:id/status', async (request, response) => {
-    await service.setStatus(request.params['id'], request.body?.userId, request.body?.status);
+  router.patch('/:id', async (request, response) => {
+    await service.changeStatus(request.params['id'], request.body?.userId, request.body?.status);
     response.sendStatus(204);
   });
 

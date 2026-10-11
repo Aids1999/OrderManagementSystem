@@ -9,6 +9,10 @@ test('API возвращает правильные HTTP-коды', async () => 
   const url = `http://127.0.0.1:${port}/api`;
 
   try {
+    const specification = await fetch(`${url}/openapi.json`);
+    assert.equal(specification.status, 200);
+    assert.ok((await specification.json() as { paths: object }).paths);
+
     const register = await fetch(`${url}/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -35,6 +39,20 @@ test('API возвращает правильные HTTP-коды', async () => 
 
     const missing = await fetch(`${url}/orders/999?userId=1`);
     assert.equal(missing.status, 404);
+
+    const accepted = await fetch(`${url}/orders/1`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId: 2, status: 'in_progress' })
+    });
+    assert.equal(accepted.status, 204);
+
+    const completed = await fetch(`${url}/orders/1`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId: 2, status: 'completed' })
+    });
+    assert.equal(completed.status, 204);
   } finally {
     await new Promise<void>(resolve => server.close(() => resolve()));
   }

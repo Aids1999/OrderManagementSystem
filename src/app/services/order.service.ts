@@ -41,11 +41,14 @@ export class OrderService {
   }
 
   async acceptOrder(id: number, userId: number): Promise<void> {
-    await firstValueFrom(this.http.put<void>(`${API_URL}/orders/${id}/accept`, { userId }));
+    await firstValueFrom(this.http.patch<void>(`${API_URL}/orders/${id}`, {
+      userId,
+      status: 'in_progress'
+    }));
   }
 
   async completeOrder(id: number, userId: number): Promise<void> {
-    await firstValueFrom(this.http.put<void>(`${API_URL}/orders/${id}/status`, {
+    await firstValueFrom(this.http.patch<void>(`${API_URL}/orders/${id}`, {
       userId,
       status: 'completed'
     }));

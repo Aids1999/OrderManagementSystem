@@ -1,5 +1,6 @@
 import cors from 'cors';
 import express from 'express';
+import swaggerUi from 'swagger-ui-express';
 import { AuthService } from '../application/services/auth.service.js';
 import { OrderService } from '../application/services/order.service.js';
 import { ProfileService } from '../application/services/profile.service.js';
@@ -9,6 +10,7 @@ import { authController } from './controllers/auth.controller.js';
 import { orderController } from './controllers/order.controller.js';
 import { profileController } from './controllers/profile.controller.js';
 import { errorHandler } from './error-handler.js';
+import { openApiDocument } from './openapi.js';
 
 export function createApp() {
   const users = new InMemoryUserRepository();
@@ -18,6 +20,8 @@ export function createApp() {
   app.use(cors({ origin: ['http://localhost:4200', 'http://127.0.0.1:4200'] }));
   app.use(express.json({ limit: '100kb' }));
 
+  app.get('/api/openapi.json', (_request, response) => response.status(200).json(openApiDocument));
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openApiDocument));
   app.get('/api/health', (_request, response) => response.status(200).json({ status: 'ok' }));
   app.use('/api/auth', authController(new AuthService(users)));
   app.use('/api/orders', orderController(new OrderService(orders, users)));

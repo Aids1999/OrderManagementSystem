@@ -40,9 +40,9 @@ test('заказ можно удалить', async () => {
 
 test('исполнитель принимает и завершает заказ', async () => {
   const service = createService();
-  await service.accept(1, 2);
+  await service.changeStatus(1, 2, 'in_progress');
   assert.equal((await service.getById(1, 2)).status, 'in_progress');
-  await service.setStatus(1, 2, 'completed');
+  await service.changeStatus(1, 2, 'completed');
   assert.equal((await service.getById(1, 2)).status, 'completed');
 });
 

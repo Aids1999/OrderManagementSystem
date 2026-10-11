@@ -7,9 +7,8 @@
 - вместо базы данных используются репозитории-заглушки в памяти;
 - бизнес-правила отделены от контроллеров;
 - добавлены проверки входных данных и тесты;
-- список заказов возвращается постранично.
-
-Swagger не добавлен, потому что по заданию он необязателен.
+- список заказов возвращается постранично;
+- Swagger показывает все методы API по адресу `http://localhost:3000/api-docs`.
 
 ## Структура DDD
 
@@ -40,13 +39,15 @@ backend/src/
 | POST | `/api/orders` | `201 Created` |
 | PUT | `/api/orders/{id}` | `204 No Content` |
 | DELETE | `/api/orders/{id}` | `204 No Content` |
-| PUT | `/api/orders/{id}/accept` | `204 No Content` |
-| PUT | `/api/orders/{id}/status` | `204 No Content` |
+| PATCH | `/api/orders/{id}` | `204 No Content` |
 | GET | `/api/profile` | `200 OK` |
 | PUT | `/api/profile` | `200 OK` |
 
 Ошибки возвращают `400`, `401`, `403`, `404` или `409` и JSON с полем
 `message`.
+
+`PATCH /api/orders/{id}` принимает статус `in_progress` или `completed`.
+Бизнес-правила смены статуса выполняются в Domain, а не в контроллере.
 
 ## Постраничная выдача
 

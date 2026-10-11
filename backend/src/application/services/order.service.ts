@@ -81,20 +81,16 @@ export class OrderService {
     await this.orders.delete(order.id);
   }
 
-  async accept(idValue: unknown, userIdValue: unknown): Promise<void> {
+  async changeStatus(idValue: unknown, userIdValue: unknown, statusValue: unknown): Promise<void> {
     const user = await this.findUser(userIdValue);
     const order = await this.findOrder(idValue);
-    order.accept(user);
-    await this.orders.update(order);
-  }
-
-  async setStatus(idValue: unknown, userIdValue: unknown, statusValue: unknown): Promise<void> {
-    if (statusValue !== 'completed') {
-      throw new DomainError('Допустимый новый статус: completed');
+    if (statusValue === 'in_progress') {
+      order.accept(user);
+    } else if (statusValue === 'completed') {
+      order.complete(user);
+    } else {
+      throw new DomainError('Допустимый статус: in_progress или completed');
     }
-    const user = await this.findUser(userIdValue);
-    const order = await this.findOrder(idValue);
-    order.complete(user);
     await this.orders.update(order);
   }
 

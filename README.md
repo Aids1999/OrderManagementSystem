@@ -44,6 +44,9 @@ npm install --prefix backend
 npm run backend:start
 ```
 
+API работает по адресу `http://localhost:3000/api`, а Swagger со списком и
+описанием всех методов — по адресу `http://localhost:3000/api-docs`.
+
 Затем во втором терминале запустить интерфейс:
 
 ```bash
