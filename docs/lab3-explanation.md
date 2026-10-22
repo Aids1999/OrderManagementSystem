@@ -2,26 +2,28 @@
 
 ## Что сделано
 
-- разработан REST API на Node.js, Express и TypeScript;
+- разработан REST API на C# и ASP.NET Core;
 - Angular-сервисы переведены с массивов на реальные HTTP-запросы;
 - вместо базы данных используются репозитории-заглушки в памяти;
 - бизнес-правила отделены от контроллеров;
 - добавлены проверки входных данных и тесты;
 - список заказов возвращается постранично;
-- Swagger показывает все методы API по адресу `http://localhost:3000/api-docs`.
+- Swagger показывает все методы API по адресу `http://localhost:3000/swagger`.
 
 ## Структура DDD
 
 ```text
-backend/src/
-├── domain/          сущности User и Order, проверки и бизнес-правила
-├── application/     сценарии, DTO и интерфейсы репозиториев
-├── infrastructure/  заглушки репозиториев вместо базы данных
-└── api/             Express, маршруты, контроллеры и обработка ошибок
+backend/
+├── OrderManagement.Api/
+│   ├── Domain/          сущности User и Order, проверки и бизнес-правила
+│   ├── Application/     сценарии, DTO и интерфейсы репозиториев
+│   ├── Infrastructure/  заглушки репозиториев вместо базы данных
+│   └── Controllers/     контроллеры ASP.NET Core
+└── OrderManagement.Tests/  тесты API
 ```
 
 Зависимости направлены внутрь: API и Infrastructure используют Application,
-а Application использует Domain. Domain не знает об Express и базе данных.
+а Application использует Domain. Domain не знает об ASP.NET Core и базе данных.
 
 ## Контроллеры
 
@@ -76,12 +78,12 @@ backend/src/
 изменение, удаление, принятие, завершение и постраничную выдачу заказов.
 
 ```bash
-npm run backend:test
+dotnet test backend/OrderManagement.sln
 ```
 
 ## Почему репозитории являются заглушками БД
 
-Application работает только с интерфейсами `UserRepository` и
-`OrderRepository`. Сейчас их реализуют `InMemoryUserRepository` и
+Application работает только с интерфейсами `IUserRepository` и
+`IOrderRepository`. Сейчас их реализуют `InMemoryUserRepository` и
 `InMemoryOrderRepository`. Позже можно добавить PostgreSQL-реализацию, не меняя
 контроллеры, Domain и Angular-компоненты.

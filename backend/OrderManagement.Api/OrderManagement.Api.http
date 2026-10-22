@@ -1,0 +1,19 @@
+@host = http://localhost:3000
+
+GET {{host}}/api/health
+
+###
+
+POST {{host}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "customer@mail.ru",
+  "password": "123456"
+}
+
+###
+
+GET {{host}}/api/orders?userId=1&status=all&page=1&pageSize=5
+
+###

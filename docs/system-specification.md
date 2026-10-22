@@ -8,7 +8,7 @@
 ## 2. Технологии
 
 - Клиент: Angular и TypeScript.
-- Сервер: Node.js, Express и TypeScript.
+- Сервер: C# и ASP.NET Core Web API.
 - Хранилище третьей лабораторной: репозитории-заглушки в памяти.
 - Планируемая база данных: PostgreSQL.
 - Обмен данными: REST API в формате JSON.
@@ -64,8 +64,7 @@
 | POST | `/api/orders` | Создание заказа |
 | PUT | `/api/orders/{id}` | Изменение заказа |
 | DELETE | `/api/orders/{id}` | Удаление заказа |
-| PUT | `/api/orders/{id}/accept` | Принятие заказа |
-| PUT | `/api/orders/{id}/status` | Изменение статуса |
+| PATCH | `/api/orders/{id}` | Принятие или завершение заказа |
 | GET | `/api/profile` | Получение профиля |
 | PUT | `/api/profile` | Изменение профиля |
 

@@ -11,7 +11,7 @@
 
 1. Визуальный дизайн основных экранов.
 2. Пользовательский интерфейс с тестовыми данными.
-3. REST API и база данных.
+3. REST API на C# и заглушки базы данных.
 
 Требования проекта находятся в каталоге `docs`, макеты первой лабораторной —
 в каталоге `design`.
@@ -37,15 +37,15 @@ npm start
 
 ## Запуск третьей лабораторной
 
-Сначала запустить API:
+Для API нужен [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0).
+Сначала запустить сервер:
 
 ```bash
-npm install --prefix backend
-npm run backend:start
+dotnet run --project backend/OrderManagement.Api
 ```
 
 API работает по адресу `http://localhost:3000/api`, а Swagger со списком и
-описанием всех методов — по адресу `http://localhost:3000/api-docs`.
+описанием всех методов — по адресу `http://localhost:3000/swagger`.
 
 Затем во втором терминале запустить интерфейс:
 
@@ -54,4 +54,8 @@ npm install
 npm start
 ```
 
-Тесты бэкенда запускаются командой `npm run backend:test`.
+Тесты бэкенда запускаются командой:
+
+```bash
+dotnet test backend/OrderManagement.sln
+```
